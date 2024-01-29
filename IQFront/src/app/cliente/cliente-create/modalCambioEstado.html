@@ -1,0 +1,18 @@
+<div style="background-color: #292727; border-radius: 2%;">
+<h1 mat-dialog-title="" class="mat-mdc-dialog-title mdc-dialog__title" id="mat-mdc-dialog-title-0" style="color: #fffa">
+    Cambiar de estado
+</h1>
+<div mat-dialog-content="" class="mat-mdc-dialog-content mdc-dialog__content" style="color: #fffa"> 
+    ¿ Es seguro que desea cambiar de estado el cliente? 
+</div>
+<div mat-dialog-actions="" class="mat-mdc-dialog-actions mdc-dialog__actions">
+    <button type="submit"  (click)="cambiarEstadoCliente()" class="btn btn-outline-success btn-lg mx-auto d-block">
+        <span class="material-icons">check_circle</span>
+            Si
+         </button>
+    <button type="submit" (click)="cerrarVentanaModal()" class="btn btn-outline-secondary btn-lg mx-auto d-block">
+        <span class="material-icons">dangerous</span>
+        No
+    </button>
+</div>
+</div>

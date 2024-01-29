@@ -1,0 +1,133 @@
+<mat-toolbar>
+
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" *ngIf="sidenav.mode ==='over'" (click)="sidenav.toggle()">
+    <mat-icon *ngIf="!sidenav.opened">menu</mat-icon>
+    <mat-icon *ngIf="sidenav.opened">close</mat-icon>
+  </button>
+  
+  <span>Information Quality</span>
+
+  <span class="example-spacer"></span>
+
+  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+    <!--<mat-icon>more_vert</mat-icon>-->
+    <mat-icon>account_circle</mat-icon>
+  </button>
+
+  <mat-menu #menu="matMenu">
+
+    <button mat-menu-item (click)="modalCambiarClave()">
+      <mat-icon>manage_accounts</mat-icon>
+      <span>Cambiar Clave</span>
+    </button>
+
+    <button mat-menu-item (click)="modalCerrarSesion()">
+      <mat-icon>exit_to_app</mat-icon>
+      <span>Salir</span>
+    </button>
+
+  </mat-menu>
+
+</mat-toolbar>
+  
+  <mat-sidenav-container class="example-container mat-elevation">
+    <mat-sidenav #sidenav="matSidenav"  mode="side" opened><h4>Gestión</h4>
+      
+      <mat-divider></mat-divider>
+      
+
+      <button [routerLink]="['cliente/clienteCreate']" mat-button  style="color: #fffa;" class="menu-button">
+        <mat-icon>person</mat-icon>
+        <span> <a  style="color: #fffa;">Gestion Clientes</a> </span> 
+      </button>
+
+
+      <button mat-button [routerLink]="['certificadoCliente']"  style="color: #fffa;" class="menu-button">
+        <i class="bi bi-card-checklist"></i>
+        <mat-icon>
+          <svg  width="16" height="16" fill="currentColor" class="bi bi-card-checklist" viewBox="0 0 16 16">
+            <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+            <path d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0zM7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z"/>
+          </svg>
+        </mat-icon>
+        <span> <a style="color: #fffa;">Certificados</a> </span> 
+      </button>
+
+
+    </mat-sidenav>
+    
+    <mat-sidenav-content>
+      <div class="content mat-elevation-z8">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  
+    
+  </mat-sidenav-container>
+
+<!-- Ventana modal de confirmación -->
+<ng-template #confirmModal class="modal-dialog-lg">
+  <div class="modal-header ">
+    <h4 class="modal-title">Confirmar Acción</h4>
+  </div>
+  <div class="modal-body ">
+    ¿Estás seguro de que deseas salir?
+  </div>
+  <div class="modal-footer ">
+    <button type="button" class="btn btn-outline-success" (click)="confirmCerrarSesion()">Confirmar</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="confirmModalRef.hide()" >Cancelar</button>
+  </div>
+</ng-template>
+
+
+<!-- Ventana modal de confirmación -->
+<ng-template #confirmModal2 class=" ">
+  
+  <div class="modal-header  "><h4 class="modal-title">Cambiar Clave</h4></div>
+  
+  <div class="modal-body ">
+
+    <div class="mb-3 row">
+      <label for="inputPassword" class="col-sm-5 col-form-label">Password Actual: *</label>
+      <div class="col-sm-7">
+        <input type="password" class="form-control" name="formPassAct" id="formPassAct" [formControl]="formPassAct" required>
+        <div class="invalid-feedback" *ngIf="formPassAct.hasError('required') && formPassAct.dirty" style="display: block;">
+          campo requerido
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <div class="mb-3 row">
+      <label for="inputPassword" class="col-sm-5 col-form-label">Nuevo Password: *</label>
+      <div class="col-sm-7">
+        <input type="password" class="form-control" name="formNewPass" id="formNewPass" [formControl]="formNewPass" required>
+        <div class="invalid-feedback" *ngIf="formNewPass.hasError('required') && formNewPass.dirty" style="display: block;">
+          campo requerido
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3 row">
+      <label for="inputPassword" class="col-sm-5 col-form-label">Confirmar Password: *</label>
+      <div class="col-sm-7">
+        <input type="password" class="form-control" name="formConfirmarPass" id="formConfirmarPass" [formControl]="formConfirmarPass" required>
+        <div class="invalid-feedback" *ngIf="formConfirmarPass.hasError('required') && formConfirmarPass.dirty" style="display: block;">
+          campo requerido
+        </div>
+      </div>
+    </div>
+    
+    <div class="alert alert-danger" role="alert" *ngIf="formValidacionForm">{{formMensajeError}}</div>
+    <div class="alert alert-success" role="alert" *ngIf="formCorrectForm">{{formMensajeCorrecto}}</div>
+
+  </div>
+
+  
+  <div class="modal-footer ">
+    <button type="button" class="btn btn-outline-success" (click)="confirmarCambioClave()">Confirmar</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="confirmModalRef.hide()" >Cancelar</button>
+  </div>
+
+</ng-template>

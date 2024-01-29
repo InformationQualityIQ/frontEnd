@@ -1,0 +1,341 @@
+<div class="container col-md-11" style="margin-top: 30px; ">
+    <div class="row g-3">
+
+        <div class="d-flex">
+            <h2>
+                Gestión de Clientes
+            </h2>
+
+        </div>
+        <div class="row g-3">
+            <p>
+                Modulo para la gestión de clientes, podrás crear nuevos clientes o modificar los existentes
+            </p>
+            <mat-divider></mat-divider>
+
+        </div>
+
+        <form class="row g-3" [formGroup]="formCompleto" >
+
+            <div class="btn-group col-md-6" role="group" aria-label="Basic radio toggle button group">
+                <input *ngIf="esProveedor" type="radio" (click)="setProveedorComercio('0')" class="btn-check" value="1" name="formTipoClienteR" id="formTipoClienteR1" autocomplete="off" checked>
+                <input *ngIf="!esProveedor" type="radio" (click)="setProveedorComercio('1')" class="btn-check" value="1" name="formTipoClienteR" id="formTipoClienteR1" autocomplete="off">
+                <label class="btn btn-outline-primary" for="formTipoClienteR1">Service Provider</label>
+                
+                <input *ngIf="!esProveedor" type="radio"   (click)="setProveedorComercio('1')" class="btn-check" value="2" name="formTipoClienteR" id="formTipoClienteR2" autocomplete="off" checked>
+                <input *ngIf="esProveedor" type="radio"   (click)="setProveedorComercio('0')" class="btn-check" value="2" name="formTipoClienteR" id="formTipoClienteR2" autocomplete="off" >
+                <label class="btn btn-outline-primary " for="formTipoClienteR2" >Merchant</label>
+            </div>
+
+
+
+            <div *ngIf="!esProveedor" class="btn-group col-md-6" role="group" aria-label="Basic radio toggle button group">
+                <input *ngIf="numNivel == '1' " type="radio" (click)="setNivelCliente('1')" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                <input *ngIf="numNivel != '1' " type="radio" (click)="setNivelCliente('1')" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" >
+                <label class="btn btn-outline-primary" for="btnradio1">Nivel 1</label>
+
+                <input *ngIf="numNivel == '2' " type="radio" (click)="setNivelCliente('2')" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" checked>
+                <input *ngIf="numNivel != '2' " type="radio" (click)="setNivelCliente('2')" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btnradio2">Nivel 2</label>
+
+              
+                <input *ngIf="numNivel == '3'" type="radio" (click)="setNivelCliente('3')" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" checked>
+                <input *ngIf="numNivel != '3'" type="radio" (click)="setNivelCliente('3')" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btnradio3">Nivel 3</label>
+
+                <input *ngIf="numNivel == '4'" type="radio" (click)="setNivelCliente('4')" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" checked>
+                <input *ngIf="numNivel != '4'" type="radio" (click)="setNivelCliente('4')" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btnradio4">Nivel 4</label>
+            </div>
+            
+            <div *ngIf="esProveedor" class="btn-group col-md-6" role="group" aria-label="Basic radio toggle button group">
+                <input *ngIf="numNivel == '1' " type="radio" (click)="setNivelCliente('1')" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                <input *ngIf="numNivel != '1' " type="radio" (click)="setNivelCliente('1')" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" >
+                <label class="btn btn-outline-primary" for="btnradio1">Nivel 1</label>
+
+                <input *ngIf="numNivel == '2' " type="radio" (click)="setNivelCliente('2')" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" checked>
+                <input *ngIf="numNivel != '2' " type="radio" (click)="setNivelCliente('2')" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btnradio2">Nivel 2</label>
+            </div>
+
+
+            <div class="row g-3"><mat-divider></mat-divider></div>
+
+
+            <div class="col-md-4" *ngIf="id_clienteMod != ''">
+                <label for="id_clienteMod" class="form-label">ID Cliente</label>
+                <input type="text" class="form-control" name="id_clienteMod" value="{{id_clienteMod}}" id="id_clienteMod" disabled>
+            </div>
+            <div class="col-md-8" *ngIf="id_clienteMod != ''"></div>
+            
+            <!-- ++++++++++++++++++++++++++++++++++++++++ ROW ++++++++++++++++++++++++++++++++++++++++-->
+
+            <div class="col-md-4">
+                <label for="formRazonSocial" class="form-label">Razon Social</label>
+                <input type="text" class="form-control" 
+                        name="formRazonSocial" id="formRazonSocial" [formControl]="formRazonSocial" required>
+                <small class="text-warning" *ngIf="formRazonSocial.hasError('required') && formRazonSocial.dirty">
+                    campo requerido
+                </small>
+            </div>
+
+            <div class="col-md-4">
+                <label for="formIdentificacion" class="form-label">identificación</label>
+                <input type="text" class="form-control" id="formIdentificacion" [formControl]="formIdentificacion">
+                <small class="text-warning" *ngIf="formIdentificacion.hasError('required') && formIdentificacion.dirty">
+                    campo requerido
+                </small>
+            </div>
+
+            <div class="col-md-4">
+                <label for="formNombreComercial" class="form-label" >Nombre comercial (DBA):</label>
+                <input type="text" class="form-control" id="formNombreComercial" [formControl]="formNombreComercial">
+                <small class="text-warning" *ngIf="formNombreComercial.hasError('required') && formNombreComercial.dirty">
+                    campo requerido
+                </small>
+            </div>
+
+            <!-- ++++++++++++++++++++++++++++++++++++++++ ROW ++++++++++++++++++++++++++++++++++++++++-->
+
+            <div class="col-md-4">
+                <label for="formDireccion" class="form-label">Dirección:</label>
+                <input type="text" class="form-control" id="formDireccion" [formControl]="formDireccion">
+                <small class="text-warning" *ngIf="formDireccion.hasError('required') && formDireccion.dirty">
+                    campo requerido
+                </small>
+            </div>
+
+            <div class="col-md-4">
+                <label for="formTelefono" class="form-label">Teléfono:</label>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="formTelefono" [formControl]="formTelefono">
+                    <button style='text-align:left' type="button" class="btn btn-primary btn-sm float-right"
+                        (click)="mostrarOcultarTelefono()">
+                        <span class="material-icons">person_add_alt</span>
+                    </button>
+                    <small class="text-warning" style="width: 100%;"
+                        *ngIf="formTelefono.hasError('required') && formTelefono.dirty">
+                        campo requerido
+                    </small>
+                </div>
+                
+            </div>
+
+            <div class="col-md-4">
+                <div *ngIf="mostrar2Tel">
+                    <label for="formTelefono2" class="form-label">Teléfono 2:</label>
+                    <input type="text" class="form-control" id="formTelefono2" [formControl]="formTelefono2">
+                    <small class="text-warning" *ngIf="formTelefono2.hasError('required') && formTelefono2.dirty">
+                        campo requerido
+                    </small>
+                </div>
+            </div>
+
+            <!-- ++++++++++++++++++++++++++++++++++++++++ ROW ++++++++++++++++++++++++++++++++++++++++-->
+
+
+            <div class="col-md-4">
+                <label for="formTelefono2" class="form-label">Contacto:</label>
+                <input type="text" class="form-control" id="formContacto" [formControl]="formContacto">
+                <small class="text-warning" *ngIf="formContacto.hasError('required') && formContacto.dirty">
+                    campo requerido
+                </small>
+            </div>
+
+            <div class="col-md-4">
+                <label for="formTelefono2" class="form-label">cargo:</label>
+                <input type="text" class="form-control" id="formCargo" [formControl]="formCargo">
+                <small class="text-warning" *ngIf="formCargo.hasError('required') && formCargo.dirty">
+                    campo requerido
+                </small>
+            </div>
+
+            <div class="col-md-4">
+                <label for="formTelefono2" class="form-label">Email:</label>
+                <input type="text" class="form-control" id="formEmail" [formControl]="formEmail">
+                <small class="text-warning" *ngIf="formEmail.hasError('required') && formEmail.dirty">
+                    campo requerido
+                </small>
+                <small class="text-warning" *ngIf="formEmail.hasError('email') && formEmail.dirty">
+                    Email incorrecto
+                </small>
+            </div>
+
+            <!-- ++++++++++++++++++++++++++++++++++++++++ ROW ++++++++++++++++++++++++++++++++++++++++-->
+
+
+            <div class="col-md-3">
+                <label for="formPais" class="form-label">Pais</label>
+                <select id="formPais" name="formPais" class="form-select" 
+                    (change)="changePais()" [formControl]="formPais">
+                    <option value="" selected>...</option>
+                    <option *ngFor="let ciu of paisesList" value="{{ciu.id_pais}}">{{ciu.pais}}</option>
+                </select>
+                <small class="text-warning" *ngIf="formPais.hasError('required') && formPais.dirty">
+                    campo requerido
+                </small>
+            </div>
+
+
+            <div class="col-md-3">
+                <label for="formDepartamento" class="form-label">Departamento</label>
+                <select id="formDepartamento" name="formDepartamento" class="form-select" 
+                    (change)="changeDepartamento()" [formControl]="formDepartamento" >
+                    <option value="" selected>Choose...</option>
+                    <option *ngFor="let dep of departamentosList" value="{{dep.id_departamento}}">{{dep.departamento}}</option>
+                </select>
+                <small class="text-warning" *ngIf="formDepartamento.hasError('required') && formDepartamento.dirty">
+                    campo requerido
+                </small>
+            </div>
+
+
+            <div class="col-md-3">
+                <label for="inputState" class="form-label">Ciudad</label>
+                <select id="formCiudad" name="formCiudad" class="form-select" [formControl]="formCiudad" >
+                    <option value="" selected>Choose...</option>
+                    <option *ngFor="let ciu of CiudadesList" value="{{ciu.id_ciudad}}">{{ciu.ciudad}}</option>
+                </select>
+                <small class="text-warning" *ngIf="formCiudad.hasError('required') && formCiudad.dirty">
+                    campo requerido
+                </small>
+            </div>
+
+            <div class="col-md-3">
+                <label for="formCodigoPostal" class="form-label">Codigo Postal:</label>
+                <input type="text" class="form-control" id="formCodigoPostal" [formControl]="formCodigoPostal">
+                <small class="text-warning" *ngIf="formCodigoPostal.hasError('required') && formCodigoPostal.dirty">
+                    campo requerido
+                </small>
+            </div>
+
+
+
+            
+            <div class="alert alert-danger" role="alert" *ngIf="formValidacionForm">
+                {{formMensajeError}}
+            </div>
+            
+
+
+            <div class="container " style="margin-top: 20px; margin-bottom: 20px;">
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-2">
+                        <button type="submit" (click)="nuevoCliente(formCompleto)" class="btn btn-outline-success">
+                            <span class="material-icons">
+                                done_outline
+                                </span>
+                            Registrar
+                        </button>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" (click)="limpiarForm()" class="btn btn-outline-secondary">
+                            <span class="material-icons">
+                                delete_outline
+                                </span>
+                                Limpiar
+                            </button>
+                    </div>
+                    <div class="col-md-5"></div>
+                    
+                </div>
+            </div>
+
+        </form>
+        
+    </div>
+
+
+<div class="container">
+    <table class="table   table-dark">
+        <thead style="text-align: center;">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Razón Social</th>
+                <th scope="col">Identificación</th>
+                <th scope="col">Nombre comercial (DBA)</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Nivel</th>
+                <th scope="col">Telefono</th>
+                <th scope="col">Telefono 2</th>
+                <th scope="col">Dirección</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Act/Desact</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            <tr *ngFor="let cliente of clientesL" >
+                <td *ngIf="cliente.estado_cliente == 'activo' " scope="row" (click)="editarCliente(cliente.id_cliente)">{{cliente.id_cliente}}</td>
+                <td *ngIf="cliente.estado_cliente == 'activo' " (click)="editarCliente(cliente.id_cliente)">{{cliente.razon_social}}</td>
+                <td *ngIf="cliente.estado_cliente == 'activo' " (click)="editarCliente(cliente.id_cliente)">{{cliente.identificacion}}</td>
+                <td *ngIf="cliente.estado_cliente == 'activo' " (click)="editarCliente(cliente.id_cliente)">{{cliente.nombre_comercial}}</td>
+                <td *ngIf="cliente.estado_cliente == 'activo' " (click)="editarCliente(cliente.id_cliente)">{{cliente.tipo_cliente}}</td>
+                <td *ngIf="cliente.estado_cliente == 'activo' " (click)="editarCliente(cliente.id_cliente)">{{cliente.nivel}}</td>
+                <td *ngIf="cliente.estado_cliente == 'activo' " (click)="editarCliente(cliente.id_cliente)">{{cliente.telefono}}</td>
+                <td *ngIf="cliente.estado_cliente == 'activo' " (click)="editarCliente(cliente.id_cliente)">{{(cliente.telefono2 == 'Null')? '': cliente.telefono2}}</td>
+                <td *ngIf="cliente.estado_cliente == 'activo' " (click)="editarCliente(cliente.id_cliente)">{{cliente.direccion}}</td>
+                <td *ngIf="cliente.estado_cliente == 'activo' " (click)="editarCliente(cliente.id_cliente)">{{cliente.estado_cliente}}</td>
+                <td style="text-align: center" *ngIf="cliente.estado_cliente == 'activo' ">
+                    <button *ngIf="cliente.estado_cliente == 'activo' "   
+                        (click)="cambiarEstadoCliente(cliente.id_cliente, '0ms', '0ms')" 
+                        type="button" class="btn btn-danger">
+                        
+                    </button>
+                </td>
+
+                
+                <td style="background-color: #b7b3b3;" *ngIf="cliente.estado_cliente != 'activo' " scope="row" >{{cliente.id_cliente}}</td>
+                <td style="background-color: #b7b3b3;" *ngIf="cliente.estado_cliente != 'activo' " >{{cliente.razon_social}}</td>
+                <td style="background-color: #b7b3b3;" *ngIf="cliente.estado_cliente != 'activo' " >{{cliente.identificacion}}</td>
+                <td style="background-color: #b7b3b3;" *ngIf="cliente.estado_cliente != 'activo' " >{{cliente.nombre_comercial}}</td>
+                <td style="background-color: #b7b3b3;" *ngIf="cliente.estado_cliente != 'activo' " >{{cliente.tipo_cliente}}</td>
+                <td style="background-color: #b7b3b3;" *ngIf="cliente.estado_cliente != 'activo' " >{{cliente.nivel}}</td>
+                <td style="background-color: #b7b3b3;" *ngIf="cliente.estado_cliente != 'activo' " >{{cliente.telefono}}</td>
+                <td style="background-color: #b7b3b3;" *ngIf="cliente.estado_cliente != 'activo'" >{{(cliente.telefono2 == 'Null')? '': cliente.telefono2}}</td>
+                <td style="background-color: #b7b3b3;" *ngIf="cliente.estado_cliente != 'activo' " >{{cliente.direccion}}</td>
+                <td style="background-color: #b7b3b3;" *ngIf="cliente.estado_cliente != 'activo' " >{{cliente.estado_cliente}}</td>
+                <td style="background-color: #b7b3b3; text-align: center" *ngIf="cliente.estado_cliente != 'activo' ">
+                    <button *ngIf="cliente.estado_cliente != 'activo' "   
+                        (click)="cambiarEstadoCliente(cliente.id_cliente, '0ms', '0ms')" 
+                        type="button" class="btn btn-success">
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+
+
+
+<ng-template #confirmModal class="">
+    <div class="modal-header ">
+      <h4 class="modal-title">Confirmar Acción</h4>
+    </div>
+    <div class="modal-body ">
+        <div class="alert alert-success" role="success" >
+            <span class="material-icons">done_outline</span>
+            {{mensajeVentanaModal}}
+        </div>
+   </div>
+    <div class="modal-footer ">
+      <button type="button" class="btn btn-outline-success" (click)="confirmModalRef.hide()">Cerrar</button>
+    </div>
+</ng-template>
+
+<ng-template #confirmModalError class="">
+    <div class="modal-header ">
+      <h4 class="modal-title">Mensaje de Error</h4>
+    </div>
+    <div class="modal-body ">
+        <div class="alert alert-danger" role="danger">
+            <span class="material-icons">dangerous</span>
+            {{mensajeVentanaModalError}}
+        </div>
+      
+    </div>
+    <div class="modal-footer ">
+      <button type="button" class="btn btn-outline-danger" (click)="confirmModalRef.hide()">Cerrar</button>
+    </div>
+</ng-template>
